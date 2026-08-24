@@ -1,0 +1,19 @@
+{
+    "file_scan_exclusions": [
+        "**/.git",
+        "**/.DS_Store",
+        "**/__pycache__",
+        "**/*.pyc"
+    ],
+    "project_panel": {
+        "hide_git_ignored": true
+    },
+    "languages": {
+        "Python": {
+            "format_on_save": "on",
+            "code_actions_on_format": {
+                "source.organizeImports.ruff": true
+            }
+        }
+    }
+}
