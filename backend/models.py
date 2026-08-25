@@ -1,9 +1,10 @@
 from datetime import datetime
 from typing import List, Optional
 
-from sqlmodel import Field, Relationship, SQLModel
+from pgvector.sqlalchemy import Vector
+from sqlmodel import Column, Field, Relationship, SQLModel
 
-from .database import engine
+from database import engine
 
 
 class Location(SQLModel, table=True):
@@ -43,7 +44,7 @@ class Author(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     first_name: str
     last_name: str
-    email: str = Field(unique=True)
+    email: str = Field(unique=True, nullable=True)
 
     items: List["Item"] = Relationship(
         back_populates="author",
@@ -165,6 +166,10 @@ class Item(SQLModel, table=True):
     approved_by: Optional[User] = Relationship(
         back_populates="approved_items",
         sa_relationship_kwargs={"foreign_keys": "[Item.approved_by_id]"},
+    )
+
+    embedding: Optional[List[float]] = Field(
+        default=None, sa_column=Column(Vector(384))
     )
 
 

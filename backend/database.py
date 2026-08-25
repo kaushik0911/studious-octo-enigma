@@ -6,7 +6,9 @@ from sqlmodel import Session, create_engine
 sqlite_file_name = "database.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"
 
-engine = create_engine(sqlite_url, connect_args={"check_same_thread": False}, echo=True)
+postgres_url = "postgresql+psycopg2://postgres:postgres@localhost:5432/library"
+
+engine = create_engine(postgres_url, echo=True)
 
 
 def get_session() -> Generator[Session, None, None]:
@@ -17,3 +19,6 @@ def get_session() -> Generator[Session, None, None]:
 def db_ping():
     with engine.connect() as conn:
         _ = conn.execute(text("SELECT 1"))
+        _ = conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector;"))
+
+        conn.commit()
