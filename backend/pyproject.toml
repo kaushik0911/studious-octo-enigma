@@ -19,6 +19,8 @@ dependencies = [
     "sentence-transformers>=6.0.0",
     "sqladmin[auth]>=0.31.0",
     "sqlmodel>=0.0.39",
+    "streamlit>=1.62.0",
+    "torchvision>=0.28.0",
 ]
 
 [tool.uv.build-backend]

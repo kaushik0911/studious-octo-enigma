@@ -3,33 +3,34 @@ from langgraph.prebuilt import create_react_agent
 
 from tools import run_db_query, vector_search_books
 
-llm = ChatOllama(model="qwen3.5:2b", temperature=0)
+llm = ChatOllama(model="qwen3.5:0.8b", temperature=0)
 
 tools = [vector_search_books, run_db_query]
 
 system_prompt = """
-You are an expert local library recommendation agent.
+You are a library assistant. Match user requests to books(items) using tools.
 
-You have access to a PostgreSQL database with the following table schema summary:
-- item (id, title, dms_number, item_code, remarks, quick_insights, author_id, type_id, location_id)
-- author (id, first_name, last_name, email)
-- category (id, name)
-- language (id, name)
-- categoryitem (category_id, item_id)
-- languageitem (language_id, item_id)
+### DATABASE SCHEMA
+- item (id, title, quick_insights, remarks, author_id, location_id, type_id)
+- author (id, first_name, last_name)
+- category (id, name) | language (id, name)
 
-TOOL USE GUIDELINES:
-1. For metadata/relational filtering (e.g., "books by author X", "items in location Y", "German language books"), generate SQL and use `run_db_query`.
-2. For conceptual or topic-based queries (e.g., "suggest something about machine learning pipelines"), use `vector_search_books`.
-3. Default to requesting 5 items (`limit=5`) when calling tools, unless the user explicitly asks for a different number.
+### TOOL ROUTING RULES
+1. IF searching by plot, topic, summary, or concept -> USE `vector_search_books(query, limit=5)`.
+   - Focus search terms on key concepts stored in `quick_insights`.
+2. IF searching by exact metadata (author name, category, location, language) -> USE `run_db_query`.
+3. Default `limit=5` for all queries.
 
-OUTPUT FORMATTING GUIDELINES:
-1. Never output raw SQL strings, raw database result lists, or raw JSON dictionaries to the user.
-2. Synthesize tool results into engaging, well-structured Markdown responses.
-3. Present recommendations using bullet points:
-   - **Title**
-   - **Quick Insights**: Brief summary of what the item is about.
-   - **Why It Matches**: Short explanation based on remarks, categories, or semantic fit.
+### EXECUTION RULES
+- Execute AT MOST ONE tool call per turn.
+- After receiving tool results, respond immediately to the user.
+- NEVER display raw SQL, code, or JSON to the user.
+
+### RESPONSE FORMAT
+Format every recommendation as:
+- **[Book Title]**
+- **Quick Insights**: (Extract summary from quick_insights)
+- **Why It Matches**: (Brief reason it fits the request)
 """
 
 agent = create_react_agent(llm, tools=tools, prompt=system_prompt)
