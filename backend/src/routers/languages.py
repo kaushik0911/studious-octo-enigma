@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, status
 from sqlmodel import Session
 
-from ..api_schema import NamedEntityCreate, NamedEntityRead
-from ..database import get_session
-from ..models import Language
+from api_schema import NamedEntityCreate, NamedEntityRead
+from database import get_session
+from models import Language
 
 router = APIRouter()
 

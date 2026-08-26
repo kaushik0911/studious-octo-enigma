@@ -1,6 +1,6 @@
 from sqladmin import ModelView
 
-from ..models import Location
+from models import Location
 
 
 class LocationView(ModelView, model=Location):

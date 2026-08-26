@@ -3,15 +3,15 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session, select
 
-from ..api_schema import (
+from api_schema import (
     ItemCreate,
     ItemRead,
     ItemReadWithDetails,
     ItemUpdate,
     M2MAssignment,
 )
-from ..database import get_session
-from ..models import Item, Language, LanguageItem
+from database import get_session
+from models import Item, Language, LanguageItem
 
 router = APIRouter()
 

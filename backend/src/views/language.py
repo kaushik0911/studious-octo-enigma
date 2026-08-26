@@ -1,11 +1,11 @@
 from sqladmin import ModelView
 
-from ..models import Category
+from models import Language
 
 
-class CategoryView(ModelView, model=Category):
-    name_plural = "Categories"
-    icon = "fa-solid fa-folder"
+class LanguageView(ModelView, model=Language):
+    name_plural = "Languages"
+    icon = "fa-solid fa-language"
 
     column_list = ["id", "name"]
     column_searchable_list = ["name"]

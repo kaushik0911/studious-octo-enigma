@@ -1,6 +1,6 @@
 from sqladmin import ModelView
 
-from ..models import ItemType
+from models import ItemType
 
 
 class ItemTypeView(ModelView, model=ItemType):
