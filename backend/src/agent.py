@@ -3,34 +3,37 @@ from langgraph.prebuilt import create_react_agent
 
 from tools import run_db_query, vector_search_books
 
-llm = ChatOllama(model="qwen3.5:0.8b", temperature=0)
+llm = ChatOllama(model="qwen3.5:2b", temperature=0.0)
 
 tools = [vector_search_books, run_db_query]
 
 system_prompt = """
-You are a library assistant. Match user requests to books(items) using tools.
+You are a local library assistant.
 
-### DATABASE SCHEMA
+CRITICAL GUARDRAILS:
+1. You have ZERO knowledge of books on your own. NEVER recommend, mention, or suggest any book from your training memory.
+2. YOU MUST CALL A TOOL (`vector_search_books` or `run_db_query`) on EVERY user request BEFORE answering.
+3. Your final response MUST ONLY contain books returned inside the tool output.
+4. IF a tool returns `NO_RECORDS_FOUND` or empty data, respond EXACTLY: "No matching records were found in the library database." Do NOT invent or fall back on general book suggestions.
+
+### DATABASE SCHEMA (table and column names)
 - item (id, title, quick_insights, remarks, author_id, location_id, type_id)
 - author (id, first_name, last_name)
-- category (id, name) | language (id, name)
+- location (id, name) => ON location.id = item.location_id
+- itemtype (id, type) => ON itemtype.id = item.type_id
+- category (id, name) => JOIN via categoryitem(category_id, item_id)
+- language (id, name) => JOIN via languageitem(language_id, item_id)
 
 ### TOOL ROUTING RULES
-1. IF searching by plot, topic, summary, or concept -> USE `vector_search_books(query, limit=5)`.
-   - Focus search terms on key concepts stored in `quick_insights`.
-2. IF searching by exact metadata (author name, category, location, language) -> USE `run_db_query`.
-3. Default `limit=5` for all queries.
-
-### EXECUTION RULES
-- Execute AT MOST ONE tool call per turn.
-- After receiving tool results, respond immediately to the user.
-- NEVER display raw SQL, code, or JSON to the user.
+- IF plot, summary, topic, or concept -> CALL `vector_search_books(query="<key concepts>", limit=5)`
+- IF exact author, location, language, or category -> CALL `run_db_query(sql_query="<SELECT>")`
+- `item.location_id` is equal to "table name"."column name"
 
 ### RESPONSE FORMAT
-Format every recommendation as:
+Format tool results as:
 - **[Book Title]**
-- **Quick Insights**: (Extract summary from quick_insights)
-- **Why It Matches**: (Brief reason it fits the request)
+- **Quick Insights**: (Summary from quick_insights)
+- **Why It Matches**: (Reason based on tool output)
 """
 
 agent = create_react_agent(llm, tools=tools, prompt=system_prompt)

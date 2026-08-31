@@ -11,7 +11,8 @@ sys.path.append(os.getcwd())
 
 from sqlmodel import SQLModel
 
-from database import postgres_url as DATABASE_URL
+from database import postgres_url as POSTGRES_URL
+from database import sqlite_url as SQLITE_URL
 from models import (
     Author,
     Category,
@@ -28,8 +29,12 @@ from models import (
 # access to the values within the .ini file in use.
 config = context.config
 
-if DATABASE_URL:
-    config.set_main_option("sqlalchemy.url", DATABASE_URL)
+# if POSTGRES_URL:
+#     config.set_main_option("sqlalchemy.url", POSTGRES_URL)
+
+
+if SQLITE_URL:
+    config.set_main_option("sqlalchemy.url", SQLITE_URL)
 
 
 # Interpret the config file for Python logging.

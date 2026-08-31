@@ -1,5 +1,5 @@
 from fastapi import Depends
-from sqlmodel import Session, select, where
+from sqlmodel import Session, select
 
 from database import engine
 from models import Item

@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from sqladmin import Admin
 
 from database import db_ping, engine
-from routers import categories, items, languages, users
+from routers import categories, chat, items, languages, users
 from views.author import AuthorView
 from views.category import CategoryView
 from views.item import ItemView
@@ -27,6 +27,8 @@ app.include_router(items.router)
 app.include_router(languages.router)
 app.include_router(users.router)
 app.include_router(categories.router)
+app.include_router(chat.router)
+
 
 admin = Admin(app, engine)
 

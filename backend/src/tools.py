@@ -19,10 +19,11 @@ def vector_search_books(query: str, limit: int = 5) -> str:
     sql = text(
         """
         SELECT id, title, quick_insights, remarks,
-                1 - (embedding <=> CAST(:vec AS vector)) AS similarity
+            1 - vec_distance_cosine(embedding, :vec) AS similarity
         FROM item
         WHERE embedding IS NOT NULL
-        ORDER BY embedding <=> CAST(:vec AS vector)
+            AND (1 - vec_distance_cosine(embedding, :vec)) >= 0.35
+        ORDER BY vec_distance_cosine(embedding, :vec) ASC
         LIMIT :limit;
     """
     )
@@ -30,14 +31,23 @@ def vector_search_books(query: str, limit: int = 5) -> str:
         result = conn.execute(
             sql, {"vec": str(query_vector), "limit": limit}
         ).fetchall()
-        return str([dict(r._mapping) for r in result])
+        items = str([dict(r._mapping) for r in result])
+
+        if not items:
+            return "NO_RECORDS_FOUND"
+
+        return str(items)
 
 
 @tool(description="Run a SQL query on the database and return the results.")
-def run_db_query(query: str):
+def run_db_query(sql_query: str):
     db = SQLDatabase(engine)
 
-    if not query.strip().lower().startswith("select"):
+    if not sql_query.strip().lower().startswith("select"):
         return "Error: Only SELECT queries are permitted."
 
-    return db.run(query)
+    result = db.run(sql_query)
+    if not result or result == "[]":
+        return "NO_RECORDS_FOUND"
+
+    return result

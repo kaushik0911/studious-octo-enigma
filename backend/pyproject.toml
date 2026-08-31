@@ -16,8 +16,10 @@ dependencies = [
     "langgraph>=1.2.11",
     "pgvector>=0.5.0",
     "psycopg2-binary>=2.9.12",
+    "pyturso>=0.7.2",
     "sentence-transformers>=6.0.0",
     "sqladmin[auth]>=0.31.0",
+    "sqlite-vec>=0.1.9",
     "sqlmodel>=0.0.39",
     "streamlit>=1.62.0",
     "torchvision>=0.28.0",
@@ -26,3 +28,11 @@ dependencies = [
 [tool.uv.build-backend]
 module-root = "src"
 module-name = ["routers", "views"]
+
+[tool.poe.tasks]
+app = "streamlit run src/app.py"
+
+[dependency-groups]
+dev = [
+    "poethepoet>=0.48.0",
+]
