@@ -1,0 +1,15 @@
+.git
+.github
+.vscode
+.zed
+.venv
+__pycache__
+*.py[cod]
+.mypy_cache
+.pytest_cache
+.ruff_cache
+*.log
+database.db
+.env
+.env.*
+!.env.example
