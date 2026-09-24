@@ -1,7 +1,3 @@
-uv run alembic upgrade head
+# Library Management Application
 
-uv run python -m main
-
-alembic revision --autogenerate -m "alter email column in Author table"
-
-streamlit app, uv run --dev poe app
+This project provides a FastAPI backend and admin panel for managing library items, authors, users, categories, and languages. It also includes a Streamlit-based library assistant.
