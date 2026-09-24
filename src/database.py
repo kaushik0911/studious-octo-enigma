@@ -1,16 +1,21 @@
-from typing import Generator
+import os
+from collections.abc import Generator
 
 import sqlite_vec
+from dotenv import load_dotenv
 from sqlalchemy import event
 from sqlmodel import Session, create_engine, text
+
+load_dotenv()
+
 
 sqlite_file_name = "database.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"
 
-username = "postgres"
-password = "postgres"
-port = 5432
-database = "library"
+username = os.getenv("USERNAME")
+password = os.getenv("PASSWORD")
+port = os.getenv("PORT")
+database = os.getenv("DATABASE")
 
 postgres_url = (
     f"postgresql+psycopg2://{username}:{password}@localhost:{port}/{database}"
@@ -19,7 +24,7 @@ postgres_url = (
 engine = create_engine(sqlite_url, echo=True)
 
 
-def get_session() -> Generator[Session, None, None]:
+def get_session() -> Generator[Session]:
     with Session(engine) as session:
         yield session
 

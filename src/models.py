@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import List, Optional
 
 from pgvector.sqlalchemy import Vector
 from sqlmodel import Column, Field, Relationship, SQLModel
@@ -8,10 +7,10 @@ from database import engine
 
 
 class Location(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
+    id: int | None = Field(default=None, primary_key=True)
     name: str
 
-    items: List["Item"] = Relationship(
+    items: list["Item"] = Relationship(
         back_populates="location",
         sa_relationship_kwargs={"foreign_keys": "Item.location_id"},
     )
@@ -21,17 +20,17 @@ class Location(SQLModel, table=True):
 
 
 class User(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
+    id: int | None = Field(default=None, primary_key=True)
     first_name: str
     last_name: str
     email: str = Field(unique=True)
 
-    sent_items: List["Item"] = Relationship(
+    sent_items: list["Item"] = Relationship(
         back_populates="sender",
         sa_relationship_kwargs={"foreign_keys": "Item.sender_id"},
     )
 
-    approved_items: List["Item"] = Relationship(
+    approved_items: list["Item"] = Relationship(
         back_populates="approved_by",
         sa_relationship_kwargs={"foreign_keys": "Item.approved_by_id"},
     )
@@ -41,12 +40,12 @@ class User(SQLModel, table=True):
 
 
 class Author(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
+    id: int | None = Field(default=None, primary_key=True)
     first_name: str
     last_name: str
     email: str = Field(unique=True, nullable=True)
 
-    items: List["Item"] = Relationship(
+    items: list["Item"] = Relationship(
         back_populates="author",
         sa_relationship_kwargs={"foreign_keys": "Item.author_id"},
     )
@@ -56,10 +55,10 @@ class Author(SQLModel, table=True):
 
 
 class ItemType(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
+    id: int | None = Field(default=None, primary_key=True)
     type: str
 
-    items: List["Item"] = Relationship(
+    items: list["Item"] = Relationship(
         back_populates="item_type",
         sa_relationship_kwargs={"foreign_keys": "Item.type_id"},
     )
@@ -72,28 +71,24 @@ class ItemType(SQLModel, table=True):
 
 
 class LanguageItem(SQLModel, table=True):
-    language_id: Optional[int] = Field(
+    language_id: int | None = Field(
         default=None, foreign_key="language.id", primary_key=True
     )
-    item_id: Optional[int] = Field(
-        default=None, foreign_key="item.id", primary_key=True
-    )
+    item_id: int | None = Field(default=None, foreign_key="item.id", primary_key=True)
 
 
 class CategoryItem(SQLModel, table=True):
-    category_id: Optional[int] = Field(
+    category_id: int | None = Field(
         default=None, foreign_key="category.id", primary_key=True
     )
-    item_id: Optional[int] = Field(
-        default=None, foreign_key="item.id", primary_key=True
-    )
+    item_id: int | None = Field(default=None, foreign_key="item.id", primary_key=True)
 
 
 # --- Parent Models ---
 
 
 class Language(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
+    id: int | None = Field(default=None, primary_key=True)
     name: str
 
     # Direct reference to linked Items
@@ -106,7 +101,7 @@ class Language(SQLModel, table=True):
 
 
 class Category(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
+    id: int | None = Field(default=None, primary_key=True)
     name: str
 
     # Direct reference to linked Items
@@ -120,7 +115,7 @@ class Category(SQLModel, table=True):
 
 # Library Items (books, magazines, etc.)
 class Item(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
+    id: int | None = Field(default=None, primary_key=True)
     dms_number: str = Field(default="", unique=True, nullable=False)
     item_code: str = Field(default="", unique=True, nullable=False)
     title: str
@@ -143,34 +138,32 @@ class Item(SQLModel, table=True):
         back_populates="items", link_model=CategoryItem
     )
 
-    author: Optional[Author] = Relationship(
+    author: Author | None = Relationship(
         back_populates="items",
         sa_relationship_kwargs={"foreign_keys": "[Item.author_id]"},
     )
 
-    sender: Optional[User] = Relationship(
+    sender: User | None = Relationship(
         back_populates="sent_items",
         sa_relationship_kwargs={"foreign_keys": "[Item.sender_id]"},
     )
 
-    location: Optional[Location] = Relationship(
+    location: Location | None = Relationship(
         back_populates="items",
         sa_relationship_kwargs={"foreign_keys": "[Item.location_id]"},
     )
 
-    item_type: Optional[ItemType] = Relationship(
+    item_type: ItemType | None = Relationship(
         back_populates="items",
         sa_relationship_kwargs={"foreign_keys": "[Item.type_id]"},
     )
 
-    approved_by: Optional[User] = Relationship(
+    approved_by: User | None = Relationship(
         back_populates="approved_items",
         sa_relationship_kwargs={"foreign_keys": "[Item.approved_by_id]"},
     )
 
-    embedding: Optional[List[float]] = Field(
-        default=None, sa_column=Column(Vector(384))
-    )
+    embedding: list[float] | None = Field(default=None, sa_column=Column(Vector(384)))
 
 
 def create_database():

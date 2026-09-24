@@ -1,4 +1,3 @@
-import uvicorn
 from fastapi import APIRouter
 from pydantic import BaseModel
 
@@ -15,6 +14,7 @@ router = APIRouter()
 
 @router.post("/chat", tags=["chat"])
 async def chat_endpoint(payload: ChatQuery):
+
     inputs = {"messages": [("user", payload.message)]}
 
     # Execute agent

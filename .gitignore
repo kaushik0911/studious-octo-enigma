@@ -365,3 +365,5 @@ Images/
 TestImages/
 .claude/*
 .agents/*
+.vscode/extensions.json
+.vscode/settings.json
