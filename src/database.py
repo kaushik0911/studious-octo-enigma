@@ -9,7 +9,7 @@ from sqlmodel import Session, create_engine, text
 load_dotenv()
 
 
-sqlite_file_name = "database.db"
+sqlite_file_name = os.getenv("DATABASE_PATH", "database.db")
 sqlite_url = f"sqlite:///{sqlite_file_name}"
 
 host = os.getenv("PGHOST")
@@ -38,6 +38,7 @@ def load_sqlite_vec(dbapi_connection, connection_record):
 def db_ping():
     with engine.connect() as conn:
         _ = conn.execute(text("SELECT 1"))
-        _ = conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector;"))
+        if engine.dialect.name == "postgresql":
+            _ = conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector;"))
 
         conn.commit()
