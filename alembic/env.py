@@ -29,13 +29,10 @@ from models import (
 # access to the values within the .ini file in use.
 config = context.config
 
-# if POSTGRES_URL:
-#     config.set_main_option("sqlalchemy.url", POSTGRES_URL)
-
-
-if SQLITE_URL:
+if False:
+    config.set_main_option("sqlalchemy.url", POSTGRES_URL)
+else:
     config.set_main_option("sqlalchemy.url", SQLITE_URL)
-
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.

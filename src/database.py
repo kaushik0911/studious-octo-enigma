@@ -12,14 +12,13 @@ load_dotenv()
 sqlite_file_name = "database.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"
 
-username = os.getenv("USERNAME")
-password = os.getenv("PASSWORD")
+host = os.getenv("PGHOST")
+username = os.getenv("PGUSER")
+password = os.getenv("PGPASSWORD")
 port = os.getenv("PORT")
-database = os.getenv("DATABASE")
+database = os.getenv("PGDATABASE")
 
-postgres_url = (
-    f"postgresql+psycopg2://{username}:{password}@localhost:{port}/{database}"
-)
+postgres_url = f"postgresql+psycopg2://{username}:{password}@{host}/{database}"
 
 engine = create_engine(sqlite_url, echo=True)
 
