@@ -27,10 +27,7 @@ dependencies = [
 
 [tool.uv.build-backend]
 module-root = "src"
-module-name = ["routers", "views"]
-
-[tool.poe.tasks]
-app = "streamlit run src/app.py"
+module-name = ["apps", "common"]
 
 [dependency-groups]
 dev = [

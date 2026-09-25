@@ -3,7 +3,7 @@ from datetime import datetime
 from pgvector.sqlalchemy import Vector
 from sqlmodel import Column, Field, Relationship, SQLModel
 
-from database import engine
+from src.common.database import engine
 
 
 class Location(SQLModel, table=True):

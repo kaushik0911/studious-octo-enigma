@@ -3,7 +3,7 @@ from langchain_core.tools import tool
 from sentence_transformers import SentenceTransformer
 from sqlalchemy import text
 
-from database import engine
+from src.common.database import engine
 
 embedder = SentenceTransformer("all-MiniLM-L6-v2")
 

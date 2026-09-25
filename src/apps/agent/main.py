@@ -1,6 +1,6 @@
 import streamlit as st
 
-from agent import agent
+from src.apps.agent.agent import agent
 
 st.title("Library Assistant")
 

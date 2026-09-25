@@ -1,14 +1,16 @@
+from typing import ClassVar
+
 from sqladmin import ModelView
 
-from models import Item
+from src.common.models import Item
 
 
 class ItemView(ModelView, model=Item):
-    icon = "fa-solid fa-book"
+    icon: ClassVar[str] = "fa-solid fa-book"
 
-    column_list = ["dms_number", "item_code", "title", "author"]
+    column_list: ClassVar[list[str]] = ["dms_number", "item_code", "title", "author"]
 
-    form_columns = [
+    form_columns: ClassVar[list[str]] = [
         "title",
         "dms_number",
         "item_code",

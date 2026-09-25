@@ -367,3 +367,5 @@ TestImages/
 .agents/*
 .vscode/extensions.json
 .vscode/settings.json
+.github/copilot-instructions.md
+.github/instructions/mermaid.instructions.md

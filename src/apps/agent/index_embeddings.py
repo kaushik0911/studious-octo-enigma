@@ -1,9 +1,9 @@
 from fastapi import Depends
 from sqlmodel import Session, select
 
-from database import engine
-from models import Item
-from tools import embedder
+from src.apps.agent.tools import embedder
+from src.common.database import engine
+from src.common.models import Item
 
 
 def index_item_embeddings():

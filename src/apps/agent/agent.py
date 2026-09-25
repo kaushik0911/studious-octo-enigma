@@ -1,9 +1,9 @@
+from langchain.agents import create_agent
 from langchain_ollama import ChatOllama
-from langgraph.prebuilt import create_react_agent
 
-from tools import run_db_query, vector_search_books
+from src.apps.agent.tools import run_db_query, vector_search_books
 
-llm = ChatOllama(model="qwen3.5:2b", temperature=0.0)
+llm = ChatOllama(model="granite4:350m", temperature=0.0)
 
 tools = [vector_search_books, run_db_query]
 
@@ -36,14 +36,14 @@ Format tool results as:
 - **Why It Matches**: (Reason based on tool output)
 """
 
-agent = create_react_agent(llm, tools=tools, prompt=system_prompt)
+agent = create_agent(llm, tools=tools, prompt=system_prompt)
 
 if __name__ == "__main__":
     inputs = {
         "messages": [
             (
                 "user",
-                "Find me any recommended items related to murder books",
+                "Find me any recommended items related to personal growth",
             )
         ]
     }
