@@ -1,4 +1,3 @@
-from fastapi import Depends
 from sqlmodel import Session, select
 
 from src.apps.agent.tools import embedder

@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Optional
 
 from pydantic import BaseModel, EmailStr
 
@@ -35,8 +34,8 @@ class ItemCreate(BaseModel):
     approved_by: int
     type_id: int
     author_id: int
-    remarks: Optional[str] = ""
-    quick_insights: Optional[str] = ""
+    remarks: str | None = ""
+    quick_insights: str | None = ""
 
 
 class ItemRead(ItemCreate):
@@ -52,10 +51,10 @@ class ItemReadWithDetails(ItemRead):
 
 
 class ItemUpdate(BaseModel):
-    title: Optional[str] = None
-    remarks: Optional[str] = None
-    quick_insights: Optional[str] = None
-    location_id: Optional[int] = None
+    title: str | None = None
+    remarks: str | None = None
+    quick_insights: str | None = None
+    location_id: int | None = None
 
 
 class M2MAssignment(BaseModel):

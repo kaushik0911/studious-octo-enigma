@@ -126,7 +126,9 @@ class Item(SQLModel, table=True):
     approved_by_id: int = Field(foreign_key="user.id")
     approved_at: datetime = Field(default_factory=datetime.now)
     remarks: str = Field(default="")
-    quick_insights: str = Field(default="")
+    quick_insights: str = Field(
+        default="", description="Small summary of the book content"
+    )
     type_id: int = Field(foreign_key="itemtype.id")
     author_id: int = Field(foreign_key="author.id")
 
