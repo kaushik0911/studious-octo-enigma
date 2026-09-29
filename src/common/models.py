@@ -3,7 +3,7 @@ from datetime import datetime
 from pgvector.sqlalchemy import Vector
 from sqlmodel import Column, Field, Relationship, SQLModel
 
-from database import engine
+from src.common.database import engine
 
 
 class Location(SQLModel, table=True):
@@ -126,7 +126,9 @@ class Item(SQLModel, table=True):
     approved_by_id: int = Field(foreign_key="user.id")
     approved_at: datetime = Field(default_factory=datetime.now)
     remarks: str = Field(default="")
-    quick_insights: str = Field(default="")
+    quick_insights: str = Field(
+        default="", description="Small summary of the book content"
+    )
     type_id: int = Field(foreign_key="itemtype.id")
     author_id: int = Field(foreign_key="author.id")
 
