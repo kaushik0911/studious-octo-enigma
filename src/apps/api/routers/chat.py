@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 
 from agent import agent
+from helpers import do_profiling
 
 
 class ChatQuery(BaseModel):
@@ -13,6 +14,7 @@ router = APIRouter()
 
 
 @router.post("/chat", tags=["chat"])
+@do_profiling
 async def chat_endpoint(payload: ChatQuery):
 
     inputs = {"messages": [("user", payload.message)]}

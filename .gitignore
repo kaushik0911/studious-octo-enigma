@@ -365,7 +365,12 @@ Images/
 TestImages/
 .claude/*
 .agents/*
+<<<<<<< HEAD
 .vscode/extensions.json
 .vscode/settings.json
 .github/copilot-instructions.md
 .github/instructions/mermaid.instructions.md
+=======
+database.db
+.idea/
+>>>>>>> bffefba (- Experiment profiling method.)
