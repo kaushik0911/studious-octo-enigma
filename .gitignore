@@ -67,8 +67,6 @@ web_modules/
 
 # dotenv environment variable files
 .env
-.env.*
-!.env.example
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -373,4 +371,9 @@ TestImages/
 =======
 database.db
 .idea/
+<<<<<<< HEAD
 >>>>>>> bffefba (- Experiment profiling method.)
+=======
+backend/backend.egg-info/
+backend/.env
+>>>>>>> f685f77 (Tested different models.)
